@@ -44,8 +44,10 @@ var DrugGroupSchema = new Schema({
 	id: String,
     name: String,
     drugAndTypes: [{
-    	drug: DrugSchema,
-    	type: Number,
+    	drug: {
+			DrugSchema
+		},
+    	type: {type: Number},
     	index: Number
     }]
 })
@@ -54,5 +56,9 @@ DrugGroupSchema.statics.findByName = function(name, cb) {
 	console.log(name);
 	return this.find({ name: new RegExp(name, 'i') }, cb);
 };
+
+DrugGroupSchema.statics.findDrugByName = function(name, cb){
+	return this.find({ 'drugAndTypes.drug.name': name}, 'drugAndTypes.drug.name', cb);
+}
 
 module.exports = mongoose.model('DrugGroup', DrugGroupSchema, 'genericgroups');
