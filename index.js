@@ -26,6 +26,7 @@ var router = express.Router();              // get an instance of the express Ro
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
     // do logging
     console.log('Something is happening.');
     next(); // make sure we go to the next routes and don't stop here
@@ -55,14 +56,8 @@ router.route('/drugGroup')
           DrugGroup.findByDrugName(req.query.drugName, cb)
         }
         else {
-          res.status(401).send('Missing arguments');
+          res.status(400).send('Missing arguments');
         }
-        // DrugGroup.find({name: req.query.name}, function(err, drugGroups) {
-        //     if (err){
-        //       res.send(err);
-        //     }
-        //     res.json(drugGroups);
-        // });
     });
 
 router.route('/drug')
