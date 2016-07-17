@@ -64,7 +64,7 @@ DrugGroupSchema.statics.findByDrugName = function(name, cb) {
 
 DrugGroupSchema.statics.findDrugByName = function(name, cb){
     var pattern = new RegExp(name, 'i');
-	var matchingGroups = this.find({ 'drugAndTypes.drug.name': pattern}, 'drugAndTypes.drug.name', function(err, docs){
+	var matchingGroups = this.find({ 'drugAndTypes.drug.name': pattern}, 'drugAndTypes.drug', function(err, docs){
         if(err){
             cb(err, docs);
         }
@@ -74,8 +74,8 @@ DrugGroupSchema.statics.findDrugByName = function(name, cb){
             })
             .flatten()
             .filter(function(o){ return o && o.drug; })
-            .map(function(o){ return o.drug.toJSON().name; })
-            .filter(function(drugName){ return pattern.test(drugName)})
+            .map(function(o){ return o.drug.toJSON(); })
+            .filter(function(drug){ return drug && pattern.test(drug.name)})
             .value();
         return cb(err, matchingNames);
     });
