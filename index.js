@@ -42,14 +42,27 @@ router.route('/drugGroup')
 
     // get the drug with that id (accessed at GET http://localhost:9090/api/drugGroup/:drugGroup_id)
     .get(function(req, res) {
-        DrugGroup.find({name: req.query.name}, function(err, drugGroups) {
-            //console.log("Name param: " + req.query.name)
-            if (err){
-              res.send(err);
-            }
-            //console.log(drugGroups.length + " drug groups found");
-            res.json(drugGroups);
-        });
+        var cb = function(err, drugGroups){
+          if(err){
+            res.send(err);
+          }
+          res.json(drugGroups);
+        }
+        if(req.query.name){
+          DrugGroup.findByName(req.query.name, cb)
+        }
+        else if(req.query.drugName){
+          DrugGroup.findByDrugName(req.query.drugName, cb)
+        }
+        else {
+          res.status(401).send('Missing arguments');
+        }
+        // DrugGroup.find({name: req.query.name}, function(err, drugGroups) {
+        //     if (err){
+        //       res.send(err);
+        //     }
+        //     res.json(drugGroups);
+        // });
     });
 
 router.route('/drug')
