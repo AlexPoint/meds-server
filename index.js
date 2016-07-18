@@ -55,6 +55,9 @@ router.route('/drugGroup')
         else if(req.query.drugName){
           DrugGroup.findByDrugName(req.query.drugName, cb)
         }
+        else if(req.query.cis){
+          DrugGroup.findByDrugCis(parseInt(req.query.cis), cb);
+        }
         else {
           res.status(400).send('Missing arguments');
         }
@@ -62,12 +65,14 @@ router.route('/drugGroup')
 
 router.route('/drug')
   .get(function(req, res){
-    DrugGroup.findDrugByName(req.query.name, function(err, drugs){
+    var cb = function(err, drugs){
       if(err){
         res.send(err);
       }
       res.json(drugs);
-    })
+    }
+    
+    DrugGroup.findDrugByName(req.query.name, cb)
   });
 
 // more routes for our API will happen here

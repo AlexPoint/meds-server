@@ -62,6 +62,11 @@ DrugGroupSchema.statics.findByDrugName = function(name, cb) {
     return this.find({ 'drugAndTypes.drug.name': new RegExp(name, 'i') }, cb);
 };
 
+DrugGroupSchema.statics.findByDrugCis = function(cis, cb) {
+    console.log(typeof(cis))
+    return this.find({ 'drugAndTypes.drug.cis': cis }, cb);
+};
+
 DrugGroupSchema.statics.findDrugByName = function(name, cb){
     var pattern = new RegExp(name, 'i');
 	var matchingGroups = this.find({ 'drugAndTypes.drug.name': pattern}, 'drugAndTypes.drug', function(err, docs){
