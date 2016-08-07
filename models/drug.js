@@ -17,6 +17,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        Drug.hasMany(models.Composition);
+        Drug.hasMany(models.Presentation);
       }
     }
   });
